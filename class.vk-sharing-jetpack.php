@@ -47,25 +47,40 @@ class Share_VKcom extends Share_Twitter {
 		}
 	}
 
+	public function get_excerpt( $post ) {
+		global $post;
+
+		if ( empty( $post->post_excerpt ) ) {
+			$excerpt = $post->post_content;
+		} else {
+			$excerpt = $post->post_excerpt;
+		}
+
+		return wp_trim_words( wp_strip_all_tags( strip_shortcodes( $excerpt ) ), 30 );
+	}
+
 	public function get_display( $post ) {
 		if ( $this->smart ) {
 			return '
 			<script type="text/javascript"><!--
 			document.write(
 				VK.Share.button(
-					false,
 					{
-						type: "button",
-						url: "'. get_permalink( $post->ID ) .'",
-						text: ""
+						url: "'. esc_js( get_permalink( $post->ID ) ) .'",
+						title: "'. esc_js( get_the_title( $post->ID ) ) .'",
+						description: "'. esc_js( $this->get_excerpt( $post->ID ) ) .'",
+						noparse: true
+					},
+					{
+						type: "button"
 					}
 				)
 			);
 			--></script>';
 		} else if ( $this->icon ) {
-			return '<a target="_blank" rel="nofollow" class="share-vkcom sd-button share-icon" href="http://vk.com/share.php?url='. get_permalink( $post->ID ) .'"><span></span></a>';
+			return '<a target="_blank" rel="nofollow" class="share-vkcom sd-button share-icon" href="http://vk.com/share.php?url='. urlencode( get_permalink( $post->ID ) ) .'"><span></span></a>';
 		} else {
-			return '<a target="_blank" rel="nofollow" class="share-vkcom sd-button share-icon" href="http://vk.com/share.php?url='. get_permalink( $post->ID ) .'"><span>Vk.com</span></a>';
+			return '<a target="_blank" rel="nofollow" class="share-vkcom sd-button share-icon" href="http://vk.com/share.php?url='. urlencode( get_permalink( $post->ID ) ) .'"><span>Vk.com</span></a>';
 		}
 	}
 }
