@@ -2,7 +2,7 @@
 Contributors: jeherve
 Tags: WordPress.com, Jetpack, sharing, vk.com, vk 
 Requires at least: 3.9
-Tested up to: 4.1
+Tested up to: 4.2.1
 Stable tag: 1.2
 
 Add a Vk.com sharing button to the Jetpack Sharing module
